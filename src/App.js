@@ -5,18 +5,19 @@ import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import Homepage from "./layouts/Homepage";
 import SelectModePage from "./layouts/SelectModePage";
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="p-12  gap-3 logo bg-[url('/public/images/MainImage.png')] min-h-screen bg-no-repeat  bg-cover bg-center bg-fixed">
-    {/* <div className="min-h-screen bg-[#353C3E] "> */}
-      <NavBar />
+    <>
+      {/* <div className="min-h-screen bg-[#353C3E] "> */}
       <Routes>
-      <Route path="*" element={<Homepage />} />
-        <Route path="/select-mode" element={<SelectModePage/>} />
+        <Route path="*" element={<Homepage />} />
+        <Route path="/select-mode" element={<SelectModePage />} />
       </Routes>
-    </div>
+      
+      <Footer />
+    </>
   );
 }
 

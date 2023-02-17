@@ -20,6 +20,8 @@ const Hompage = () => {
       </button>
      </div>
     </div>
+    <About />
+      <Features />
     </div>
   )
 }
