@@ -2,39 +2,67 @@ import React from 'react'
 import createMode from '../assets/create_mode.png'
 import answerOnlineMode from '../assets/answer_online_mode.png'
 import printMode from '../assets/print_mode.png'
+import { Link } from 'react-router-dom'
 
 
 const SelectModePage = () => {
   return (
-    <div className=' h-full lg:p-16 text-[#E3F1F4]'>
+    <div className='w-fit h-full lg:p-16 text-[#E3F1F4]'>
     <div className='flex flex-col gap-8'>
- <div className='w-auto space-y-1'>
+ <div className=' space-y-1'>
  <h1 className='text-3xl'>What mode are you using?</h1>
         <div className='bg-[#E3F1F4] h-[1px] w-full'></div>
  </div>
  <div className='flex gap-8'>
-    <div className="relative lg:w-[320px] lg:h-[225px]">
-        <img src={createMode} alt="" className='absolute -z-[1]'/>
-        <div className='h-full w-full bg-[#353C3E] opacity-70 absolute -z-[1]'></div>
-        <div className=' z-50'>
-            <h1 className='font-bold text-4'>
+    <Link>
+    <div className="relative lg:w-[320px] rounded lg:h-[225px] bg-[url('/src/assets/create_mode.png')]  hover:border-solid hover:border-2  hover:border-[#e3f1f4] delay-300">
+        {/* <img src={createMode} alt="" className='absolute -z-[1]'/> */}
+        <div className='h-full w-full bg-[#353c3ea4] cursor-pointer p-6 hover:bg-[#353c3ee6] duration-300 delay-300'>
+        <div className=' space-y-2'>
+            <h1 className='font-bold text-2xl'>
             Create Mode
             </h1>
             <p>
             Add your own questions to our database.
             </p>
         </div>
+        </div>
+    
     </div>
-    <div className="relative">
-        <img src={printMode} alt="" />
-        <div></div>
-        <div></div>
+    </Link>
+    <Link>
+    <div className="relative lg:w-[320px] rounded lg:h-[225px] bg-[url('/src/assets/print_mode.png')]  hover:border-solid hover:border-2  hover:border-[#e3f1f4] delay-300">
+        {/* <img src={createMode} alt="" className='absolute -z-[1]'/> */}
+        <div className='h-full w-full bg-[#353c3ea4] cursor-pointer p-6 hover:bg-[#353c3ee6] duration-300 delay-300'>
+        <div className=' space-y-2'>
+            <h1 className='font-bold text-2xl'>
+            Print Mode
+            </h1>
+            <p>
+            Generate, download and print  exam or test questions.
+            </p>
+        </div>
+        </div>
+    
     </div>
-    <div className="relative">
-        <img src={answerOnlineMode} alt="" />
-        <div></div>
-        <div></div>
+    </Link>
+    <Link>
+    <div className="relative lg:w-[320px] rounded lg:h-[225px] bg-[url('/src/assets/answer_online_mode.png')]  hover:border-solid hover:border-2  hover:border-[#e3f1f4] delay-300">
+        {/* <img src={createMode} alt="" className='absolute -z-[1]'/> */}
+        <div className='h-full w-full bg-[#353c3ea4] cursor-pointer p-6 hover:bg-[#353c3ee6] duration-300 delay-300'>
+        <div className=' space-y-2'>
+            <h1 className='font-bold text-2xl'>
+            Answer Online Mode
+            </h1>
+            <p>
+            Test yourself online on any subject with our quick questions generation feature. 
+                        </p>
+        </div>
+        </div>
+    
     </div>
+    </Link>
+ 
  </div>
         </div>
     </div>
