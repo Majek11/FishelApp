@@ -4,7 +4,7 @@ import Logo from "../assets/logo.png";
 const NavBar = () => {
   return (
     <>
-      <div className="flex gap-3">
+      <div className="flex gap-3 pt-8 px-16">
         <div className="">
           <img src={Logo} alt="" />
         </div>

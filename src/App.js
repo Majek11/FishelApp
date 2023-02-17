@@ -9,10 +9,7 @@ import Hompage from "./layouts/Hompage";
 function App() {
   return (
     <>
-    <div className="p-12  gap-3 logo bg-[url('/public/images/MainImage.png')] min-h-screen bg-no-repeat  bg-cover bg-center">
-      <NavBar />
       <Hompage />
-      </div>
       <About />
       <Features />
       <Footer />

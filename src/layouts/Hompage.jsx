@@ -1,9 +1,12 @@
 import React from 'react'
+import NavBar from '../components/NavBar'
 
 const Hompage = () => {
   return (
-    <div>
-      <div className="main-info">
+    <div className="bg-[url('/public/images/MainImage.png')] min-h-screen bg-no-repeat  bg-cover bg-center">
+    <NavBar />
+    <div className="">
+      <div className="main-info gap-3 logo                                     ">
         <h1 className='text-center font-bold text-[64px] text-white leading-[70px] pt-20'>
           Find questions for <br /> yourself, your students, or <br /> your
           children.
@@ -17,7 +20,13 @@ const Hompage = () => {
       </button>
      </div>
     </div>
+    </div>
   )
 }
 
 export default Hompage
+
+
+
+
+// bg-[url('/public/images/MainImage.png')] min-h-screen bg-no-repeat  bg-cover bg-center
