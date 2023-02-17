@@ -1,10 +1,12 @@
 import React from 'react'
-import NavBar from '../components/NavBar'
+// import NavBar from '../components/NavBar'
+import About from '../components/About'
+import Features from '../components/Features'
 
 const Hompage = () => {
   return (
     <div className="bg-[url('/public/images/MainImage.png')] min-h-screen bg-no-repeat  bg-cover bg-center">
-    <NavBar />
+    {/* <NavBar /> */}
     <div className="">
       <div className="main-info gap-3 logo                                     ">
         <h1 className='text-center font-bold text-[64px] text-white leading-[70px] pt-20'>
