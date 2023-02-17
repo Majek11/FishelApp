@@ -1,7 +1,4 @@
 import React from 'react'
-import createMode from '../assets/create_mode.png'
-import answerOnlineMode from '../assets/answer_online_mode.png'
-import printMode from '../assets/print_mode.png'
 import { Link } from 'react-router-dom'
 
 
