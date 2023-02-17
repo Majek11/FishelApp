@@ -4,9 +4,9 @@ import Logo from "../assets/logo.png";
 const NavBar = () => {
   return (
     <>
-      <div className="flex gap-3">
-        <div>
-          <img src={Logo} alt="" sizes="30" />
+      <div className="flex gap-3 pt-8 px-16">
+        <div className="">
+          <img src={Logo} alt="" />
         </div>
         <h1 className="text-[32px] font-bold text-white">Fishel</h1>
       </div>

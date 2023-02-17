@@ -1,4 +1,7 @@
 import React from "react";
+import About from "./components/About";
+import Features from "./components/Features";
+import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import Homepage from "./layouts/Homepage";
 import SelectModePage from "./layouts/SelectModePage";
