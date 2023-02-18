@@ -3,10 +3,10 @@ import { BiChevronDown } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 
 const Selector = ({ DropDownList, callback }) => {
-  const selectionName = DropDownList.name;
-  const labeName = DropDownList.labeName;
-  const placeholderName = DropDownList.placeholderName;
-  const listItems = DropDownList.listItems;
+  const selectionName = "Subject";
+  const labeName = "Select Subject";
+  const placeholderName = "Enter Subject";
+  const listItems = DropDownList;
 
   const [inputValue, setInputValue] = useState("");
   const [selected, setSelected] = useState("");
@@ -16,8 +16,8 @@ const Selector = ({ DropDownList, callback }) => {
     <div className="text-[12px] sm:text-[16px] font-regular">
       <div
         onClick={() => setOpen(!open)}
-        className={`bg-mode-bg-light min-w-[200px] w-full h-[35px] p-2 flex cursor-pointer items-center justify-between rounded overflow-hidden border hover:border-slate-500 ${
-          !selected && "text-mode-paragraph-light"
+        className={` min-w-[200px] w-full h-[35px] p-2 lg:py-4 flex cursor-pointer items-center justify-between rounded overflow-hidden border-2 hover:border-[#8BE3F9] ${
+          !selected && "text-[#E3F1F4]"
         }`}
       >
         {selected
@@ -28,43 +28,43 @@ const Selector = ({ DropDownList, callback }) => {
         <BiChevronDown size={20} className={`${open && "rotate-180"}`} />
       </div>
       <ul
-        className={`bg-mode-bg-light mt-2 overflow-y-auto my-scrollbar ${
+        className={` rounded-lg mt-2 overflow-y-auto my-scrollbar ${
           open ? "max-h-60" : "max-h-0"
         } `}
       >
-        <div className="flex items-center px-2 sticky top-0 bg-mode-bg-light">
+        <div className="flex items-center px-2 sticky top-0 bg-[#E3F1F4]">
           <AiOutlineSearch size={18} className="text-gray-700" />
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value.toLowerCase())}
             placeholder={placeholderName}
-            className="placeholder:text-mode-paragraph-light p-2 outline-none bg-mode-bg-light"
+            className="text-[#353C3E] p-2 outline-none bg-[#E3F1F4]"
           />
         </div>
-        {listItems?.map((listItem) => (
+        {listItems?.map((listItem,index) => (
           <li
-            key={listItem?.name}
-            className={`p-2 text-sm hover:bg-mode-paragraph-light  cursor-pointer hover:text-mode-bg-light
+            key={index}
+            className={`p-2 text-sm text-[#353C3E] bg-[#E3F1F4] hover:bg-[#ffffff44]  cursor-pointer hover:text-[#E3F1F4]
             ${
-              listItem?.name?.toLowerCase() === selected?.toLowerCase() &&
-              "bg-mode-paragraph-light text-mode-bg-light"
+              listItem?.subject_name?.toLowerCase() === selected?.toLowerCase() &&
+              "bg-[#353C3E]  "
             }
             ${
-              listItem?.name?.toLowerCase().startsWith(inputValue)
+              listItem?.subject_name?.toLowerCase().startsWith(inputValue)
                 ? "block"
                 : "hidden"
             }`}
             onClick={() => {
-              if (listItem?.name?.toLowerCase() !== selected.toLowerCase()) {
-                setSelected(listItem?.name);
+              if (listItem?.subject_name?.toLowerCase() !== selected.toLowerCase()) {
+                setSelected(listItem?.subject_name);
                 setOpen(false);
-                callback(listItem?.name, selectionName);
+                callback(listItem?.subject_name);
                 setInputValue("");
               }
             }}
           >
-            {listItem?.name}
+            {listItem?.subject_name} ({listItem?.number_of_questions})
           </li>
         ))}
       </ul>
