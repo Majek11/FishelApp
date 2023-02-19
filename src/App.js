@@ -2,10 +2,12 @@ import React from "react";
 import Footer from "./components/Footer";
 import NavBar from "./components/NavBar";
 import Homepage from "./layouts/Homepage";
-import SelectModePage from "./layouts/SelectModePage";
+import SelectModePage from "./pages/SelectModePage";
 import { Routes, Route } from "react-router-dom";
 import GenerateModePage from "./layouts/modePages/GenerateModePage"
 import CreateModePage from "./layouts/modePages/CreateModePage"
+import NavBar from "./components/NavBar";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
@@ -17,8 +19,8 @@ function App() {
         <Route path="/generate-mode" element={<GenerateModePage />} />
         <Route path="/create-mode" element={<CreateModePage />} />
       </Routes>
-      
-      <Footer />
+
+      <SignUp />
     </>
   );
 }
