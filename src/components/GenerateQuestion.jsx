@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Selector from "./Selector";
 import MultipleTopics from "./MultipleTopics";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import { Link } from "react-router-dom";
+import {questionGenerationValidation} from "../utils"
 
 const GenerateQuestion = () => {
   const getSubjectsUrl =
@@ -17,6 +19,7 @@ const GenerateQuestion = () => {
   const [theory, setTheory] = useState(0);
   const [subjective, setSubjective] = useState(0);
   const [generateMode, setGenerateMode] = useState("");
+  const [isValid,setIsValid] = useState(false)
 
   const subjectName = allSubjects;
 
@@ -27,6 +30,7 @@ const GenerateQuestion = () => {
   }, []);
 
   const handleOnClickGenerate = (e) => {
+    
     let newGenerationData = {
       topics: topics,
       subject: subject,
@@ -38,9 +42,16 @@ const GenerateQuestion = () => {
         subjective: subjective,
       },
     };
+    const [validation,message] = questionGenerationValidation(newGenerationData)
+    console.log(validation,message)
+    if(validation){
+      setIsValid(true)
+    }else{
+      setIsValid(false)
+    }
+    
     setGenerationData(newGenerationData);
   };
-  console.log(generationData);
 
   const getDropDownValue = (selectedValue) => {
     setSubject(selectedValue);
@@ -245,10 +256,20 @@ const GenerateQuestion = () => {
                 </div>
               </div>
               <button
-                onClick={handleOnClickGenerate}
+                onClick={handleOnClickGenerate} 
                 className=" py-4 bg-[#8BE3F9] text-[#353C3E] lg:text-xl lg:font-bold rounded-lg hover:scale-105 duration-300 delay-200"
               >
-                Generate
+                {
+                  isValid?(  <Link to={isValid?"/answer-online":"/generate-mode"}>
+                  {console.log(isValid)}
+                  Generate
+                </Link>):(
+                    <Link to={isValid?"/answer-online":"/generate-mode"}>
+                    {console.log(isValid)}
+                    Validate Form
+                  </Link>
+                )
+                }
               </button>
             </div>
           </div>

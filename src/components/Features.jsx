@@ -10,8 +10,8 @@ const Features = () => {
     </div>
     <div className="about-details text-start px-[70px] pt-28">
     <h1 className='text-[49px] text-[#0C4A5A] font-bold'>Features</h1>
-        <div className='text-[23px] text-[#353C3E] pt-10 font-["Nunito"] space-y-8 font-semibold space-y-[20px]'>
-        <p>Practise related examination questions <br /> both essay and objective.</p> 
+        <div className='text-[23px] text-[#353C3E] pt-10 font-["Nunito"] space-y-8 font-semibold lg:space-y-[20px]'>
+        <p>Practice related examination questions <br /> both essay and objective.</p> 
         <p>Make reviews and read other teachers <br /> reviews on any subject.</p>
         <p>Access to textbook and other <br /> related materials.</p>
         <p>Step by step guide on answering <br /> questions as relating.</p> 

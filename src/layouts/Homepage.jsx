@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar from "../components/NavBar";
+import { Link } from "react-router-dom";
 import About from "../components/About";
 import Features from "../components/Features";
 import Footer from "../components/Footer";
@@ -7,8 +7,7 @@ import Footer from "../components/Footer";
 const Hompage = () => {
   return (
     <>
-    <div className="bg-[url('/public/images/MainImage.png')] bg-no-repeat  bg-cover bg-center">
-      <NavBar />
+    <div className="bg-[url('/public/images/MainImage.png')] h-screen bg-no-repeat  bg-cover bg-center pt-40">
         <div className="main-info gap-3 logo">
           <h1 className="text-center font-bold text-[64px] text-white leading-[70px] pt-20">
             Find questions for <br /> yourself, your students, or <br /> your
@@ -22,14 +21,14 @@ const Hompage = () => {
         </div>
 
         <div className="text-center pt-8 pb-28">
+          <Link to="/select-mode">
           <button className="px-8 py-3 bg-[#8BE3F9] text-[#083743] font-bold text-[24px] rounded-md">
             Get Started
-          </button>
+          </button></Link>
         </div>
       </div>
       <About />
       <Features />
-      <Footer />
     </>
   );
 };
