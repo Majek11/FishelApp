@@ -3,7 +3,7 @@ import Selector from "./Selector";
 import MultipleTopics from "./MultipleTopics";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import { Link } from "react-router-dom";
-import {questionGenerationValidation} from "../utils"
+import { questionGenerationValidation } from "../utils";
 
 const GenerateQuestion = () => {
   const getSubjectsUrl =
@@ -11,7 +11,6 @@ const GenerateQuestion = () => {
 
   const [allSubjects, setAllSubjects] = useState([]);
   const [subjectTopics, setSubjectTopics] = useState([]);
-  const [generationData, setGenerationData] = useState({});
   const [subject, setSubject] = useState("");
   const [topics, setTopics] = useState([]);
   const [difficultyLevel, setDifficultyLevel] = useState("");
@@ -19,7 +18,8 @@ const GenerateQuestion = () => {
   const [theory, setTheory] = useState(0);
   const [subjective, setSubjective] = useState(0);
   const [generateMode, setGenerateMode] = useState("");
-  const [isValid,setIsValid] = useState(false)
+  const [isValid, setIsValid] = useState(false);
+  const [validationResponse, setValidationResponse] = useState("");
 
   const subjectName = allSubjects;
 
@@ -30,7 +30,6 @@ const GenerateQuestion = () => {
   }, []);
 
   const handleOnClickGenerate = (e) => {
-    
     let newGenerationData = {
       topics: topics,
       subject: subject,
@@ -42,15 +41,15 @@ const GenerateQuestion = () => {
         subjective: subjective,
       },
     };
-    const [validation,message] = questionGenerationValidation(newGenerationData)
-    console.log(validation,message)
-    if(validation){
-      setIsValid(true)
-    }else{
-      setIsValid(false)
+    const [validation, message] =
+      questionGenerationValidation(newGenerationData);
+    setValidationResponse(message);
+    if (validation) {
+      setIsValid(true);
+      console.log(newGenerationData)
+    } else {
+      setIsValid(false);
     }
-    
-    setGenerationData(newGenerationData);
   };
 
   const getDropDownValue = (selectedValue) => {
@@ -74,12 +73,23 @@ const GenerateQuestion = () => {
           <p>Loading...</p>
         </div>
       ) : (
-        <div className="min-h-screen bg-[#353C3E] text-[#E3F1F4] flex flex-col justify-start items-center py-32 px-4 duration-300">
+        <div className=" min-h-screen bg-[#353C3E] text-[#E3F1F4] flex flex-col justify-start items-center py-32 px-4 duration-300">
+          {validationResponse === "" ? (
+            <></>
+          ) : (
+            <div
+              className={`fixed font-bold text-center top-0  ${
+                isValid ? "bg-green-400 text-[#353C3E]" : "bg-red-400"
+              } bg-red-400 p-2 w-full duration-500 `}
+            >
+              {validationResponse}
+            </div>
+          )}
           <div className="flex flex-col gap-8">
             <h1 className="text-xl lg:text-3xl font-bold">
-              Generate Questions
+              <Link to="/select-mode" className=" opacity-50 text-xl font-normal hover:opacity-80 duration-300">What mode are.../</Link> Generate Questions
             </h1>
-            <div className="flex flex-col space-y-8 accent-[#8BE3F9]">
+            <div className="flex flex-col space-y-8 accent-[#8BE3F9] gap-8">
               <div className="space-y-4">
                 <label htmlFor="" className="text-lg lg:text-xl font-medium ">
                   Subject
@@ -246,7 +256,7 @@ const GenerateQuestion = () => {
                       value={subjective}
                       onChange={(e) => {
                         if (e.target.value <= 10 && e.target.value >= 0) {
-                          setSubjective(e.target.value)
+                          setSubjective(e.target.value);
                         }
                       }}
                       placeholder="Max 10"
@@ -255,21 +265,22 @@ const GenerateQuestion = () => {
                   </div>
                 </div>
               </div>
-              <button
-                onClick={handleOnClickGenerate} 
-                className=" py-4 bg-[#8BE3F9] text-[#353C3E] lg:text-xl lg:font-bold rounded-lg hover:scale-105 duration-300 delay-200"
-              >
-                {
-                  isValid?(  <Link to={isValid?"/answer-online":"/generate-mode"}>
-                  {console.log(isValid)}
-                  Generate
-                </Link>):(
-                    <Link to={isValid?"/answer-online":"/generate-mode"}>
-                    {console.log(isValid)}
+              <button onClick={handleOnClickGenerate} className="mt-8 ">
+                {isValid ? (
+                  <Link
+                    to="/generate-mode/questions"
+                    className="py-4 px-8 bg-[#8BE3F9] text-[#353C3E] lg:text-xl lg:font-bold rounded-lg hover:scale-105 duration-300 delay-200"
+                  >
+                    Generate
+                  </Link>
+                ) : (
+                  <Link
+                    to="/generate-mode"
+                    className="py-4 px-8 bg-[#8BE3F9] text-[#353C3E] lg:text-xl lg:font-bold rounded-lg hover:scale-105 duration-300 delay-200"
+                  >
                     Validate Form
                   </Link>
-                )
-                }
+                )}
               </button>
             </div>
           </div>

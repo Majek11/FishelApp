@@ -8,7 +8,8 @@ const GenerateModePage = () => {
     <div>
           <Routes>
       <Route path="/" element={<GenerateQuestion />} />
-        <Route path="/answer-online*" element={<QuestionsPage/>} />
+        {/* <Route path="/" element={<QuestionsPage/>} /> */}
+        <Route path="/questions" element={<QuestionsPage/>} />
         {/* <Route path="/print*" element={<Dashboard/>} /> */}
       </Routes>
         {/* <button></button> */}

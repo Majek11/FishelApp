@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/select-mode" element={<SelectModePage />} />
-        <Route path="/generate-mode" element={<GenerateModePage />} />
+        <Route path="/generate-mode*" element={<GenerateModePage />} />
         <Route path="/create-mode" element={<CreateModePage />} />
       </Routes>
     <Footer/>
