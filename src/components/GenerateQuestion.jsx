@@ -6,20 +6,26 @@ import { Link } from "react-router-dom";
 import { questionGenerationValidation } from "../utils";
 
 const GenerateQuestion = () => {
+  let generationSetup = {
+    topics: [],
+    subject: "",
+    difficulty_level: "",
+    generation_mode: "",
+    question_type: {
+      objective: "",
+      theory: "",
+      subjective: "",
+    },
+  };
   const getSubjectsUrl =
     "https://script.google.com/macros/s/AKfycbzkd8EcJ4LNSIqXZMs0rbvF7jaleGAE2DgZv9sXTgRGBGtrXx7L0ep2n7MqVwEJQ3KMBg/exec";
 
   const [allSubjects, setAllSubjects] = useState([]);
   const [subjectTopics, setSubjectTopics] = useState([]);
-  const [subject, setSubject] = useState("");
-  const [topics, setTopics] = useState([]);
-  const [difficultyLevel, setDifficultyLevel] = useState("");
-  const [objective, setObjective] = useState(0);
-  const [theory, setTheory] = useState(0);
-  const [subjective, setSubjective] = useState(0);
-  const [generateMode, setGenerateMode] = useState("");
   const [isValid, setIsValid] = useState(false);
   const [validationResponse, setValidationResponse] = useState("");
+  const [generationData, setGenerationData] = useState(generationSetup);
+  const [showError, setShowError] = useState(false)
 
   const subjectName = allSubjects;
 
@@ -29,31 +35,14 @@ const GenerateQuestion = () => {
       .then((d) => setAllSubjects(d[0].data));
   }, []);
 
-  const handleOnClickGenerate = (e) => {
-    let newGenerationData = {
-      topics: topics,
-      subject: subject,
-      difficulty_level: difficultyLevel,
-      generation_mode: generateMode,
-      question_type: {
-        objective: objective,
-        theory: theory,
-        subjective: subjective,
-      },
-    };
+  const handleOnClickGenerate = () => {
     const [validation, message] =
-      questionGenerationValidation(newGenerationData);
-    setValidationResponse(message);
-    if (validation) {
-      setIsValid(true);
-      console.log(newGenerationData)
-    } else {
-      setIsValid(false);
-    }
+      questionGenerationValidation(generationData);
+    return [validation, message]
   };
 
   const getDropDownValue = (selectedValue) => {
-    setSubject(selectedValue);
+    setGenerationData({ ...generationData, subject: selectedValue });
     for (let i = 0; i < allSubjects.length; i++) {
       if (selectedValue === allSubjects[i].subject_name) {
         setSubjectTopics(allSubjects[i].subject_topics);
@@ -62,8 +51,13 @@ const GenerateQuestion = () => {
   };
 
   const getSelectedTopics = (selectedTopics) => {
-    setTopics(selectedTopics);
+    setGenerationData({ ...generationData, topics: selectedTopics });
   };
+
+  useEffect(() => {
+    setIsValid(handleOnClickGenerate()[0]);
+    setValidationResponse(handleOnClickGenerate()[1])
+  }, [generationData]);
 
   return (
     <>
@@ -74,20 +68,26 @@ const GenerateQuestion = () => {
         </div>
       ) : (
         <div className=" min-h-screen bg-[#353C3E] text-[#E3F1F4] flex flex-col justify-start items-center py-32 px-4 duration-300">
-          {validationResponse === "" ? (
+          {!showError? (
             <></>
           ) : (
             <div
               className={`fixed font-bold text-center top-0  ${
                 isValid ? "bg-green-400 text-[#353C3E]" : "bg-red-400"
-              } bg-red-400 p-2 w-full duration-500 `}
+              } p-2 w-full duration-500 `}
             >
               {validationResponse}
             </div>
           )}
           <div className="flex flex-col gap-8">
             <h1 className="text-xl lg:text-3xl font-bold">
-              <Link to="/select-mode" className=" opacity-50 text-xl font-normal hover:opacity-80 duration-300">What mode are.../</Link> Generate Questions
+              <Link
+                to="/select-mode"
+                className=" opacity-50 text-xl font-normal hover:opacity-80 duration-300"
+              >
+                What mode are.../
+              </Link>{" "}
+              Generate Questions
             </h1>
             <div className="flex flex-col space-y-8 accent-[#8BE3F9] gap-8">
               <div className="space-y-4">
@@ -123,8 +123,13 @@ const GenerateQuestion = () => {
                         value="Easy"
                         name="level"
                         id="easy"
-                        checked={difficultyLevel === "Easy"}
-                        onChange={(e) => setDifficultyLevel(e.target.value)}
+                        checked={generationData.difficulty_level === "Easy"}
+                        onChange={(e) => {
+                          setGenerationData({
+                            ...generationData,
+                            difficulty_level: e.target.value,
+                          });
+                        }}
                       />
                       <label
                         htmlFor="easy"
@@ -139,8 +144,13 @@ const GenerateQuestion = () => {
                         value="Medium"
                         name="level"
                         id="medium"
-                        checked={difficultyLevel === "Medium"}
-                        onChange={(e) => setDifficultyLevel(e.target.value)}
+                        checked={generationData.difficulty_level === "Medium"}
+                        onChange={(e) => {
+                          setGenerationData({
+                            ...generationData,
+                            difficulty_level: e.target.value,
+                          });
+                        }}
                       />
                       <label
                         htmlFor="medium"
@@ -155,8 +165,13 @@ const GenerateQuestion = () => {
                         value="Hard"
                         name="level"
                         id="hard"
-                        checked={difficultyLevel === "Hard"}
-                        onChange={(e) => setDifficultyLevel(e.target.value)}
+                        checked={generationData.difficulty_level === "Hard"}
+                        onChange={(e) => {
+                          setGenerationData({
+                            ...generationData,
+                            difficulty_level: e.target.value,
+                          });
+                        }}
                       />
                       <label
                         htmlFor="hard"
@@ -178,8 +193,15 @@ const GenerateQuestion = () => {
                         value="Answer Online"
                         name="mode"
                         id="Online"
-                        checked={generateMode === "Answer Online"}
-                        onChange={(e) => setGenerateMode(e.target.value)}
+                        checked={
+                          generationData.generation_mode === "Answer Online"
+                        }
+                        onChange={(e) => {
+                          setGenerationData({
+                            ...generationData,
+                            generation_mode: e.target.value,
+                          });
+                        }}
                       />
                       <label
                         htmlFor="Online"
@@ -194,8 +216,15 @@ const GenerateQuestion = () => {
                         value="Print Offline"
                         name="mode"
                         id="Offline"
-                        checked={generateMode === "Print Offline"}
-                        onChange={(e) => setGenerateMode(e.target.value)}
+                        checked={
+                          generationData.generation_mode === "Print Offline"
+                        }
+                        onChange={(e) => {
+                          setGenerationData({
+                            ...generationData,
+                            generation_mode: e.target.value,
+                          });
+                        }}
                       />
                       <label
                         htmlFor="Offline"
@@ -219,10 +248,13 @@ const GenerateQuestion = () => {
 
                     <input
                       type="number"
-                      value={objective}
+                      value={generationData.question_type.objective}
                       onChange={(e) => {
                         if (e.target.value <= 30 && e.target.value >= 0) {
-                          setObjective(e.target.value);
+                          setGenerationData({
+                            ...generationData,
+                            question_type: {...generationData.question_type, objective:e.target.value},
+                          });
                         }
                       }}
                       placeholder="Max 30"
@@ -236,10 +268,13 @@ const GenerateQuestion = () => {
 
                     <input
                       type="number"
-                      value={theory}
+                      value={generationData.question_type.theory}
                       onChange={(e) => {
                         if (e.target.value <= 3 && e.target.value >= 0) {
-                          setTheory(e.target.value);
+                          setGenerationData({
+                            ...generationData,
+                            question_type: {...generationData.question_type, theory:e.target.value},
+                          });
                         }
                       }}
                       placeholder="Max 3"
@@ -248,15 +283,18 @@ const GenerateQuestion = () => {
                   </div>
                   <div className="flex gap-2">
                     <div className="flex items-center text-[#F0FCFF] font-medium  h-[40px] w-[100px] lg:text-lg">
-                      Subjective
+                    Subjective
                     </div>
 
                     <input
                       type="number"
-                      value={subjective}
+                      value={generationData.question_type.subjective}
                       onChange={(e) => {
                         if (e.target.value <= 10 && e.target.value >= 0) {
-                          setSubjective(e.target.value);
+                          setGenerationData({
+                            ...generationData,
+                            question_type: {...generationData.question_type, subjective:e.target.value},
+                          });
                         }
                       }}
                       placeholder="Max 10"
@@ -265,7 +303,7 @@ const GenerateQuestion = () => {
                   </div>
                 </div>
               </div>
-              <button onClick={handleOnClickGenerate} className="mt-8 ">
+              <button onClick={(e) => setShowError(true)} className="mt-8 ">
                 {isValid ? (
                   <Link
                     to="/generate-mode/questions"

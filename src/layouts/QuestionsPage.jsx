@@ -4,6 +4,7 @@ import PropagateLoader from "react-spinners/PropagateLoader";
 const QuestionsPage = () => {
     const getQuestionUrl = "https://script.google.com/macros/s/AKfycbwUzlieBl9Uan5DnO7knSfwEbZjlIHf9SuGSpRGTt9O0fLR4V-FPZ0D3-qxWhjFoYTl/exec"
     const [allQuestions,setAllQuestion] = useState([])
+    
     // Fetch question data
     useEffect(() => {
         fetch(getQuestionUrl)
