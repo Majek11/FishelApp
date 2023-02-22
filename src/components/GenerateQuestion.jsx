@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Selector from "./Selector";
 import MultipleTopics from "./MultipleTopics";
-import PropagateLoader from "react-spinners/PropagateLoader";
+import BarLoader from "react-spinners/BarLoader";
 import { Link } from "react-router-dom";
 import { questionGenerationValidation } from "../utils";
 
@@ -63,7 +63,7 @@ const GenerateQuestion = () => {
     <>
       {allSubjects.length === 0 ? (
         <div className="h-screen bg-[#353C3E] text-[#8BE3F9] text-xl flex flex-col justify-center items-center gap-8 duration-300">
-          <PropagateLoader color="#8BE3F9" size={15} />
+          <BarLoader color="#8BE3F9" size={15} />
           <p>Loading...</p>
         </div>
       ) : (
