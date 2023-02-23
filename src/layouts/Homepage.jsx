@@ -10,13 +10,15 @@ const Hompage = () => {
     <div className="bg-[url('/public/images/MainImage.png')] h-screen bg-no-repeat  bg-cover bg-center pt-40">
         <div className="main-info gap-3 logo">
           <h1 className="text-center font-bold text-[64px] text-white leading-[70px] pt-20">
-            Find questions for <br /> yourself, your students, or <br /> your
-            children.
+            The Examination Question Site.
           </h1>
           <p className="text-[24px] text-white font-thin text-center pt-8">
-            Fishel allows you to generate test and exam questions. <br /> It
+            
+            Fishel allows you to create or generate test and exam questions. 
+            {/* <br /> It
             also allows seasoned teachers to add to our <br /> database of
-            questions.
+            questions. */}
+            {/* Fishe */}
           </p>
         </div>
 
