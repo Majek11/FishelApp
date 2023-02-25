@@ -72,7 +72,7 @@ const GenerateQuestion = () => {
             <></>
           ) : (
             <div
-              className={`fixed font-bold text-center top-0  ${
+              className={`fixed font-bold text-center top-0 z-30  ${
                 isValid ? "bg-green-400 text-[#353C3E]" : "bg-red-400"
               } p-2 w-full duration-500 `}
             >

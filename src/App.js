@@ -19,7 +19,7 @@ function App() {
         <Route path="/create-mode" element={<CreateModePage />} />
       </Routes>
     <Footer/>
-      <SignUp />
+      {/* <SignUp /> */}
     </>
   );
 }
