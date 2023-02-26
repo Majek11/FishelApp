@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Objectives = ({allQuestions}) => {
-    console.log(allQuestions)
+const Objectives = ({allQuestions,checked}) => {
+
     let alphabets = ["A","B","C","D","E"]
   return (
     <div className='flex flex-col gap-8 py-8 px-2'>
@@ -24,13 +24,17 @@ const Objectives = ({allQuestions}) => {
                   </div>
                  <div className='flex flex-col py-8 gap-8'>
                   <div>{question.question_text}</div>
-                  <div>
-                  {question.question_options.map((option,index) => (
-                   <div key={index}>
+                  <div className='flex flex-col gap-2'>
+                  {question.question_options.map((option,i) => (
+                   <div key={i}>
                       {
-                        true?(<div>
-                          {alphabets[index]}. {option[0]}
-                        </div>):(<></>)
+                        checked?(<div className={` p-2 rounded-lg cursor-pointer duration-300 ${option[1] === "true"?'text-[#93e6fb] bg-[#8be3f925]':''}`}>
+                          {alphabets[i]}. {option[0]}
+                        </div>):(
+                          <div className='p-2 rounded-lg cursor-pointer duration-300'>
+                          {alphabets[i]}. {option[0]}
+                        </div>
+                        )
                       }
                    </div>
                   ))}

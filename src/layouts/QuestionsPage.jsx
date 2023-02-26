@@ -6,6 +6,7 @@ import { BiDownload } from "react-icons/bi";
 import Objectives from "../pages/QuestionTypePages/Objectives";
 import Subjectives from "../pages/QuestionTypePages/Subjectives";
 import Theories from "../pages/QuestionTypePages/Theories";
+import ReactSwitch from 'react-switch';
 
 const QuestionsPage = () => {
   const getQuestionUrl =
@@ -35,6 +36,14 @@ const QuestionsPage = () => {
     setPDFUrls(data[0].data);
     setIsPDFStarted(false);
   }
+
+  const [checked, setChecked] = useState(false);
+
+  const handleChange = val => {
+    setChecked(val)
+  }
+
+  console.log(checked)
 
   const selectTab = (e) => {
     setSelectedTab(e.target.dataset.user);
@@ -149,7 +158,10 @@ const QuestionsPage = () => {
               {
                 newGenerationData.generation_mode === "Print Offline"?(
 
-                  <div>Solution</div>
+                  <div className="flex gap-4 items-center">Solution  <ReactSwitch
+                  checked={checked}
+                  onChange={handleChange}
+                /></div>
                 ):(
                   <></>
                 )
@@ -160,9 +172,9 @@ const QuestionsPage = () => {
                 <Routes>
                   <Route
                     path="/"
-                    element={<Objectives allQuestions={allQuestions} />}
+                    element={<Objectives allQuestions={allQuestions} checked={checked}/>}
                   />
-                  <Route path="/objective" element={<Objectives allQuestions={allQuestions} />} />
+                  <Route path="/objective" element={<Objectives allQuestions={allQuestions} checked={checked} />} />
                   <Route path="/subjective" element={<Subjectives />} />
                   <Route path="/theory" element={<Theories />} />
                 </Routes>

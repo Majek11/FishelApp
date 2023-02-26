@@ -16,7 +16,7 @@ const SettingsDetails = ({ generationSetupData }) => {
         <p>
           <span className="font-medium">Topics: </span>
           {generationSetupData.topics.map(
-            (topic,index) => (index === 0 ? (<span>{topic}</span>) : (<span>, {topic} </span>))
+            (topic,index) => (index === 0 ? (<span key={index}>{topic}</span>) : (<span key={index}>, {topic} </span>))
           )}
         </p>
         <p>
