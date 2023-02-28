@@ -10,7 +10,7 @@ import ReactSwitch from 'react-switch';
 
 const QuestionsPage = () => {
   const getQuestionUrl =
-    "https://script.google.com/macros/s/AKfycbwUzlieBl9Uan5DnO7knSfwEbZjlIHf9SuGSpRGTt9O0fLR4V-FPZ0D3-qxWhjFoYTl/exec";
+    "https://script.google.com/macros/s/AKfycbyzh4cobzBctjyTso8LLcCH7wzwEsf-mFLhm73Hq32gCFZ5GHpHjKmARZqzXCg-eUBV/exec";
 
   const getPDFQuestionUrl =
     "https://script.google.com/macros/s/AKfycbybVmFn0vbMI2-5CqCQYjcV_U-Tmi63fMy6YJOM6CyovXMlMqve6ejHz5vKSOKJHkh2/exec";
@@ -19,7 +19,7 @@ const QuestionsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPDFStarted, setIsPDFStarted] = useState(false);
   const [pdfUrls, setPDFUrls] = useState({});
-  const [selectedTab, setSelectedTab] = useState("Objective");
+  const [selectedTab, setSelectedTab] = useState("");
 
   async function fetchAllQuestions() {
     const response = await fetch(getQuestionUrl);
@@ -53,18 +53,7 @@ const QuestionsPage = () => {
   useEffect(() => {
     fetchAllQuestions();
   }, []);
-
-  let newGenerationData = {
-    topics: [1, 2, 3, 4, 5],
-    subject: "English",
-    difficulty_level: "Easy",
-    generation_mode: "Print Offline",
-    question_type: {
-      objective: "10",
-      theory: "0",
-      subjective: "0",
-    },
-  };
+  const newGenerationData = JSON.parse(localStorage.getItem("SetupDetails"));
   return (
     <>
       {!isLoading ? (
@@ -85,12 +74,23 @@ const QuestionsPage = () => {
           </h1>
           <div className="grid grid-cols-[300px_3fr] gap-8">
             <aside className="flex flex-col gap-8">
-              <button
+             {
+               newGenerationData.generation_mode === "Print Offline"?(
+                <button
                 onClick={fetchPdfQuestionsLinks}
                 className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
               >
                 Get Questions As PDF <BiDownload size={24} />
               </button>
+              ):(
+                <button
+                // onClick={fetchPdfQuestionsLinks}
+                className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
+              >
+                Submit
+              </button>
+              )
+             }
 
               {isPDFStarted ? (
                 <div className="fixed top-0 left-0 w-screen h-full bg-[#000000b3] text-[#8BE3F9] text-xl flex justify-center items-center">
@@ -172,11 +172,11 @@ const QuestionsPage = () => {
                 <Routes>
                   <Route
                     path="/"
-                    element={<Objectives allQuestions={allQuestions} checked={checked}/>}
+                    element={<Objectives allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>}
                   />
-                  <Route path="/objective" element={<Objectives allQuestions={allQuestions} checked={checked} />} />
-                  <Route path="/subjective" element={<Subjectives />} />
-                  <Route path="/theory" element={<Theories />} />
+                  <Route path="/objective" element={<Objectives allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>} />
+                  <Route path="/subjective" element={<Subjectives allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>} />
+                  <Route path="/theory" element={<Theories allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>} />
                 </Routes>
               </div>
             </main>

@@ -38,6 +38,7 @@ const GenerateQuestion = () => {
   const handleOnClickGenerate = () => {
     const [validation, message] =
       questionGenerationValidation(generationData);
+      localStorage.setItem("SetupDetails", JSON.stringify(generationData));
     return [validation, message]
   };
 
