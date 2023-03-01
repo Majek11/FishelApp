@@ -7,10 +7,12 @@ import Objectives from "../pages/QuestionTypePages/Objectives";
 import Subjectives from "../pages/QuestionTypePages/Subjectives";
 import Theories from "../pages/QuestionTypePages/Theories";
 import ReactSwitch from 'react-switch';
+import{getFilteredData} from '../utils'
 
 const QuestionsPage = () => {
+  const newGenerationData = JSON.parse(localStorage.getItem("SetupDetails"));
   const getQuestionUrl =
-    "https://script.google.com/macros/s/AKfycbyzh4cobzBctjyTso8LLcCH7wzwEsf-mFLhm73Hq32gCFZ5GHpHjKmARZqzXCg-eUBV/exec";
+    "https://script.google.com/macros/s/AKfycbwPwS-Gv3Kt2z8WO6MBn8bSu73RLkVqz7y5x5F3n0vczHm7B_k8t9pXm2hfvLwFwYzv/exec";
 
   const getPDFQuestionUrl =
     "https://script.google.com/macros/s/AKfycbybVmFn0vbMI2-5CqCQYjcV_U-Tmi63fMy6YJOM6CyovXMlMqve6ejHz5vKSOKJHkh2/exec";
@@ -24,8 +26,8 @@ const QuestionsPage = () => {
   async function fetchAllQuestions() {
     const response = await fetch(getQuestionUrl);
     const data = await response.json();
-
-    setAllQuestion(data[0].data);
+    const filteredData = await getFilteredData(data[0].data,newGenerationData)
+    setAllQuestion(filteredData);
     setIsLoading(true);
   }
 
@@ -53,7 +55,6 @@ const QuestionsPage = () => {
   useEffect(() => {
     fetchAllQuestions();
   }, []);
-  const newGenerationData = JSON.parse(localStorage.getItem("SetupDetails"));
   return (
     <>
       {!isLoading ? (
@@ -172,11 +173,11 @@ const QuestionsPage = () => {
                 <Routes>
                   <Route
                     path="/"
-                    element={<Objectives allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>}
+                    element={<Objectives allQuestions={allQuestions.objective} checked={checked} newGenerationData={newGenerationData}/>}
                   />
-                  <Route path="/objective" element={<Objectives allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>} />
-                  <Route path="/subjective" element={<Subjectives allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>} />
-                  <Route path="/theory" element={<Theories allQuestions={allQuestions} checked={checked} newGenerationData={newGenerationData}/>} />
+                  <Route path="/objective" element={<Objectives allQuestions={allQuestions.objective} checked={checked} newGenerationData={newGenerationData}/>} />
+                  <Route path="/subjective" element={<Subjectives allQuestions={allQuestions.subjective} checked={checked} newGenerationData={newGenerationData}/>} />
+                  <Route path="/theory" element={<Theories allQuestions={allQuestions.theory} checked={checked} newGenerationData={newGenerationData}/>} />
                 </Routes>
               </div>
             </main>

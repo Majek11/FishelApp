@@ -1,7 +1,7 @@
 import React from "react";
 
 const Subjectives = ({ allQuestions, checked, newGenerationData }) => {
-  let alphabets = ["A", "B", "C", "D", "E"];
+
   return (
     <>
       {newGenerationData.generation_mode !== "Print Offline" ? (
@@ -12,7 +12,7 @@ const Subjectives = ({ allQuestions, checked, newGenerationData }) => {
                 <h1 className="text-2xl font-bold">Question {index + 1}</h1>
                 <div className="flex justify-between">
                   <p className="px-2 py-1 rounded-full text-[#93e6fb] bg-[#8be3f925]">
-                    {question.question_topics}
+                    {question.topic}
                   </p>
                   <p className="text-[#8BE3F9]">
                     Author: {question.question_author}
@@ -43,7 +43,7 @@ const Subjectives = ({ allQuestions, checked, newGenerationData }) => {
                 <h1 className="text-2xl font-bold">Question {index + 1}</h1>
                 <div className="flex justify-between">
                   <p className="px-2 py-1 rounded-full text-[#93e6fb] bg-[#8be3f925]">
-                    {question.question_topics}
+                    {question.topic}
                   </p>
                   <p className="text-[#8BE3F9]">
                     Author: {question.question_author}
@@ -53,29 +53,20 @@ const Subjectives = ({ allQuestions, checked, newGenerationData }) => {
               <div className="flex flex-col py-8 gap-2">
                 <div>{question.question_text}</div>
                 <div className="flex flex-col">
-                      {checked ? (<>
-                  {question.question_options.map((option, i) => (
-                    <div key={i}>
-                    {
-                      option[1] === "true"?(
+                      {checked ? (
+              
                         <input
                         type="text"
-                        value={option[0]}
+                        value={question.question_answers[0]}
                         className={` p-2 outline-none border-b-2 border-solid border-[#93e6fb] text-[#93e6fb] bg-[#8be3f925]`}
                         placeholder="Your Answer"
                         
                         />
-                        ):("")
-                        
-                      }
-                    </div>
-                    ))}
-                    </>
+                       
                       ) : (
                         <div>
                           <input
                             type="text"
-                            disabled="true"
                             className={` p-2 bg-transparent outline-none border-b-2 border-gray-500 border-solid `}
                             placeholder="Your Answer"
                           />

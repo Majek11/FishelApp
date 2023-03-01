@@ -11,7 +11,7 @@ const Theories = ({ allQuestions, checked, newGenerationData }) => {
                 <h1 className="text-2xl font-bold">Question {index + 1}</h1>
                 <div className="flex justify-between">
                   <p className="px-2 py-1 rounded-full text-[#93e6fb] bg-[#8be3f925]">
-                    {question.question_topics}
+                    {question.topic}
                   </p>
                   <p className="text-[#8BE3F9]">
                     Author: {question.question_author}
@@ -41,7 +41,7 @@ const Theories = ({ allQuestions, checked, newGenerationData }) => {
                 <h1 className="text-2xl font-bold">Question {index + 1}</h1>
                 <div className="flex justify-between">
                   <p className="px-2 py-1 rounded-full text-[#93e6fb] bg-[#8be3f925]">
-                    {question.question_topics}
+                    {question.topic}
                   </p>
                   <p className="text-[#8BE3F9]">
                     Author: {question.question_author}
@@ -52,23 +52,16 @@ const Theories = ({ allQuestions, checked, newGenerationData }) => {
                 <div>{question.question_text}</div>
                 <div className="flex flex-col">
                   {checked ? (
-                    <>
-                      {question.question_options.map((option, i) =>
-                        option[1] === "true" ? (
+                  
                           <textarea
                             rows="20"
                             cols="50"
                             className="p-2 outline-none border-2 rounded border-solid h-48 w-full  border-[#93e6fb] text-[#93e6fb] bg-[#8be3f925]"
                             disabled="true"
-                            key={i}
                           >
-                            {option[0]}
+                            {question.question_answers[0]}
                           </textarea>
-                        ) : (
-                          ""
-                        )
-                      )}
-                    </>
+                        
                   ) : (
                     <div>
                       <textarea

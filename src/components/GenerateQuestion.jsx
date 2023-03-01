@@ -18,7 +18,7 @@ const GenerateQuestion = () => {
     },
   };
   const getSubjectsUrl =
-    "https://script.google.com/macros/s/AKfycbzkd8EcJ4LNSIqXZMs0rbvF7jaleGAE2DgZv9sXTgRGBGtrXx7L0ep2n7MqVwEJQ3KMBg/exec";
+    "https://script.google.com/macros/s/AKfycbxR05dMjpFUNol3WbohK5ZCuoQGMizkrhPzhcP9mpnZjy59PF2lGJWuFFGxqtMxMA3UlQ/exec";
 
   const [allSubjects, setAllSubjects] = useState([]);
   const [subjectTopics, setSubjectTopics] = useState([]);
