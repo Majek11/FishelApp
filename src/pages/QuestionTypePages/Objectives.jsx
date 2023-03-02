@@ -7,29 +7,25 @@ const Objectives = ({
   checked,
   newGenerationData,
   submit,
+  callback,
 }) => {
   const scoringSheet = JSON.parse(localStorage.getItem("scoringSheet")); 
   const [recordAnswer, setRecordAnswer] = useState(scoringSheet.objective);
   const [TotalScore, setTotalScore] = useState(0);
   let alphabets = ["A", "B", "C", "D", "E"];
 
-  useEffect(() => {
-    if (submit) {
-      scoreTest();
-    }
-  }, [submit]);
-
-  const scoreTest = () => {
+  
+  const scoreTest = (userAnswer) => {
     let sumScore = 0;
     for (let i = 0; i < allQuestions.length; i++) {
-      if (allQuestions[i].question_answers[0] === recordAnswer[i]) {
+      if (allQuestions[i].question_answers[0] === userAnswer[i]) {
         sumScore++;
       }
     }
     setTotalScore(sumScore);
-    callback(sumScore, selectionName)
+    callback(sumScore, "objective")
   };
-
+  
   if (allQuestions.length === 0) {
     return (
       <div className=" h-[75vh] bg-[#484F51]  rounded-lg p-8 flex flex-col gap-8 justify-center items-center">
@@ -94,7 +90,7 @@ const Objectives = ({
                             : ""
                         }`}
                       >
-                        {/* {question.question_answers[0]} */}
+                        {question.question_answers[0]}
                         <input
                           type="radio"
                           disabled={submit}
@@ -113,6 +109,7 @@ const Objectives = ({
                             setRecordAnswer(
                               newRecordAnswer
                             );
+                            scoreTest(newRecordAnswer)
                             localStorage.setItem("scoringSheet", JSON.stringify({
                               ...scoringSheet,
                               objective:newRecordAnswer,

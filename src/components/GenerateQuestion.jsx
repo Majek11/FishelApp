@@ -308,7 +308,7 @@ const GenerateQuestion = () => {
               <button onClick={(e) => setShowError(true)} className="mt-8 ">
                 {isValid ? (
                   <Link
-                    to="/generate-mode/questions"
+                    to="/generate-mode/questions/objective"
                     className="py-4 px-8 bg-[#8BE3F9] text-[#353C3E] lg:text-xl lg:font-bold rounded-lg hover:scale-105 duration-300 delay-200"
                   >
                     Generate

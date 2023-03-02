@@ -24,6 +24,11 @@ const QuestionsPage = () => {
   const [selectedTab, setSelectedTab] = useState("");
   const [scoring, setScoring] = useState({});
   const [submit, setSubmit] = useState(false);
+  const [scoresPerQuestionType, setScoresPerQuestionType] = useState({
+    objective: 0,
+    theory: 0,
+    subjective: 0,
+  });
 
   async function fetchAllQuestions() {
     const response = await fetch(getQuestionUrl);
@@ -34,20 +39,36 @@ const QuestionsPage = () => {
     setScoring(scoringSheet);
     setIsLoading(true);
     localStorage.setItem("scoringSheet", JSON.stringify(scoringSheet));
-
   }
-  
-  const wow = (e) => {
-    setSubmit(!submit)
+  useEffect(() => {
+    setTotalNumberOfQuestions(
+      +newGenerationData.question_type.objective +
+        +newGenerationData.question_type.subjective +
+        +newGenerationData.question_type.theory
+    );
+  }, [scoring]);
+  const [allTotalScores, setAllTotalScores] = useState(0);
+  const [totalNumberOfQuestions, setTotalNumberOfQuestions] = useState(0);
+  const [isMarking, setIsMarking] = useState(false);
+
+  const submitTest = (e) => {
+    setSubmit(true);
+    scoreTest(0, "")
+  };
+
+  async function scoreTest(totalScore, questionType) {
+    setIsMarking(true);    
+   let newScoresPerQuestionType=  {
+      ...scoresPerQuestionType,
+      [questionType]: totalScore,
+    }
+      setScoresPerQuestionType(newScoresPerQuestionType);
+    let scoresPerQuestionTypeValues = Object.values(newScoresPerQuestionType)
+    setAllTotalScores(scoresPerQuestionTypeValues.reduce((a, b) => a + b, 0));
+    setIsMarking(false);
   }
 
-  // const getDropDownValue = (selectedValue, selectionName) => {
-  //   let updatedUserData = { ...userData };
-  //   updatedUserData[selectionName] = selectedValue;
-  //   setUserData(updatedUserData);
-  //   yourDetailsDropDown["UserData"] = updatedUserData
-  //   localStorage.setItem('CalcDetails', JSON.stringify(yourDetailsDropDown));
-  // };
+  console.log(allTotalScores);
 
   async function fetchPdfQuestionsLinks() {
     setIsPDFStarted(true);
@@ -68,6 +89,10 @@ const QuestionsPage = () => {
   };
 
   // Fetch question data
+  // useEffect(() => {
+  //   fetchAllQuestions();
+  // }, [submit]);
+
   useEffect(() => {
     fetchAllQuestions();
   }, []);
@@ -98,9 +123,17 @@ const QuestionsPage = () => {
                 >
                   Get Questions As PDF <BiDownload size={24} />
                 </button>
+              ) : submit ? (
+                <Link
+                  to="/generate-mode"
+                  className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
+                >
+                  {submit}
+                  Generate New Questions
+                </Link>
               ) : (
                 <button
-                  onClick={wow}
+                  onClick={submitTest}
                   className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
                 >
                   Submit
@@ -179,24 +212,33 @@ const QuestionsPage = () => {
                   <></>
                 )}
               </div>
-              <div className="text-[#93e6fb] px-4">
-                Total Score: <b>40/50 marks</b>{" "}
-              </div>
+              {
+                submit?(
+                  isMarking ? (
+                    <div className="text-[#93e6fb] px-4 flex justify-between items-center">
+                      Calculating your answers... <BarLoader color="#8BE3F9" />
+                    </div>
+                  ) : (
+                    <div className="text-[#93e6fb] px-4 flex justify-between">
+                      <div>
+                        Total Score : {allTotalScores}/{totalNumberOfQuestions}{" "}
+                        marks
+                      </div>
+                      <div>
+                        Percentage :{" "}
+                        {((allTotalScores / totalNumberOfQuestions) * 100).toFixed(
+                          2
+                        )}
+                        %
+                      </div>
+                    </div>
+                  )
+                ):(
+                 <> </>
+                )
+              }
               <div className="h-screen overflow-y-scroll">
                 <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <Objectives
-                        allQuestions={allQuestions.objective}
-                        checked={checked}
-                        scoringSheet={scoring.objective}
-                        newGenerationData={newGenerationData}
-                        submit={submit}
-                        // callback={getDropDownValue}
-                      />
-                    }
-                  />
                   <Route
                     path="/objective"
                     element={
@@ -206,7 +248,7 @@ const QuestionsPage = () => {
                         scoringSheet={scoring.objective}
                         newGenerationData={newGenerationData}
                         submit={submit}
-                        // callback={getDropDownValue}
+                        callback={scoreTest}
                       />
                     }
                   />
@@ -219,7 +261,7 @@ const QuestionsPage = () => {
                         scoringSheet={scoring.subjective}
                         newGenerationData={newGenerationData}
                         submit={submit}
-                        // callback={getDropDownValue}
+                        callback={scoreTest}
                       />
                     }
                   />
@@ -232,7 +274,7 @@ const QuestionsPage = () => {
                         scoringSheet={scoring.theory}
                         newGenerationData={newGenerationData}
                         submit={submit}
-                        // callback={getDropDownValue}
+                        callback={scoreTest}
                       />
                     }
                   />

@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import emptyPage from "../../assets/Empty_page.svg"
+import emptyPage from "../../assets/Empty_page.svg";
 
-const Subjectives = ({ allQuestions, checked,newGenerationData, submit }) => {
-
-  const scoringSheet = JSON.parse(localStorage.getItem("scoringSheet")); 
+const Subjectives = ({
+  allQuestions,
+  checked,
+  newGenerationData,
+  submit,
+  callback,
+}) => {
+  const scoringSheet = JSON.parse(localStorage.getItem("scoringSheet"));
   const [recordAnswer, setRecordAnswer] = useState(scoringSheet.subjective);
   const [TotalScore, setTotalScore] = useState(0);
-console.log(recordAnswer);
+
   useEffect(() => {
     if (submit) {
       scoreTest();
@@ -22,17 +27,24 @@ console.log(recordAnswer);
       }
     }
     setTotalScore(sumScore);
+    callback(sumScore, "subjective");
   };
 
-  if(allQuestions.length === 0){
-    return(<div className=" h-[75vh] bg-[#484F51]  rounded-lg p-8 flex flex-col gap-8 justify-center items-center">
-      <h1 className="text-2xl font-bold">No Subjective Questions Generated</h1>
-      <img src={emptyPage} alt="not Subjectives found" width={300} />
-      <Link to="/generate-mode" className="bg-[#8BE3F9] text-[#353C3E] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4">
-      Back to Generate  Question
-      </Link>
-
-    </div>)
+  if (allQuestions.length === 0) {
+    return (
+      <div className=" h-[75vh] bg-[#484F51]  rounded-lg p-8 flex flex-col gap-8 justify-center items-center">
+        <h1 className="text-2xl font-bold">
+          No Subjective Questions Generated
+        </h1>
+        <img src={emptyPage} alt="not Subjectives found" width={300} />
+        <Link
+          to="/generate-mode"
+          className="bg-[#8BE3F9] text-[#353C3E] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
+        >
+          Back to Generate Question
+        </Link>
+      </div>
+    );
   }
 
   return (
@@ -63,36 +75,52 @@ console.log(recordAnswer);
                 <div>{question.question_text}</div>
                 <div className="flex flex-col gap-2">
                   <div>
-                 <input
+                    <input
                       type="text"
                       disabled={submit}
                       value={recordAnswer[index]}
-                      className={` p-2 bg-transparent outline-none border-b-2 border-solid ${submit && question.question_answers[0].toLowerCase() === recordAnswer[index].toLowerCase()?'text-[#93e6fb] bg-[#8be3f928]':''} ${submit && question.question_answers[0].toLowerCase() !== recordAnswer[index].toLowerCase()?' text-red-100 bg-[#b157575b]':''} `}
+                      className={` p-2 bg-transparent outline-none border-b-2 border-solid ${
+                        submit &&
+                        question.question_answers[0].toLowerCase() ===
+                          recordAnswer[index].toLowerCase()
+                          ? "text-[#93e6fb] bg-[#8be3f928]"
+                          : ""
+                      } ${
+                        submit &&
+                        question.question_answers[0].toLowerCase() !==
+                          recordAnswer[index].toLowerCase()
+                          ? " text-red-100 bg-[#b157575b]"
+                          : ""
+                      } `}
                       placeholder="Your Answer"
                       onChange={(e) => {
-                        let newRecordAnswer =   recordAnswer.map((rValue, rIndex) => {
-                          if (rIndex === index) {
-                            return e.target.value;
-                          } else {
-                            return rValue;
+                        let newRecordAnswer = recordAnswer.map(
+                          (rValue, rIndex) => {
+                            if (rIndex === index) {
+                              return e.target.value;
+                            } else {
+                              return rValue;
+                            }
                           }
-                        })
-                        setRecordAnswer(
-                          newRecordAnswer
                         );
-                        localStorage.setItem("scoringSheet", JSON.stringify({
-                          ...scoringSheet,
-                          subjective:newRecordAnswer,
-                        }))
+                        setRecordAnswer(newRecordAnswer);
+                        localStorage.setItem(
+                          "scoringSheet",
+                          JSON.stringify({
+                            ...scoringSheet,
+                            subjective: newRecordAnswer,
+                          })
+                        );
                       }}
-                      
                     />
                   </div>
-                  {
-                    submit?(<div className="text-[#93e6fb] bg-[#8be3f928] p-2">
+                  {submit ? (
+                    <div className="text-[#93e6fb] bg-[#8be3f928] p-2">
                       {question.question_answers[0]}
-                    </div>):(<></>)
-                  }
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             </div>
@@ -116,28 +144,25 @@ console.log(recordAnswer);
               <div className="flex flex-col py-8 gap-2">
                 <div>{question.question_text}</div>
                 <div className="flex flex-col">
-                      {checked ? (
-              
-                        <input
+                  {checked ? (
+                    <input
+                      type="text"
+                      value={question.question_answers[0]}
+                      className={` p-2 outline-none border-b-2 border-solid border-[#93e6fb] text-[#93e6fb] bg-[#8be3f925]`}
+                      placeholder="Your Answer"
+                    />
+                  ) : (
+                    <div>
+                      <input
                         type="text"
-                        value={question.question_answers[0]}
-                        className={` p-2 outline-none border-b-2 border-solid border-[#93e6fb] text-[#93e6fb] bg-[#8be3f925]`}
+                        className={` p-2 bg-transparent outline-none border-b-2 border-gray-500 border-solid `}
                         placeholder="Your Answer"
-                        
-                        />
-                       
-                      ) : (
-                        <div>
-                          <input
-                            type="text"
-                            className={` p-2 bg-transparent outline-none border-b-2 border-gray-500 border-solid `}
-                            placeholder="Your Answer"
-                          />
-                        </div>
-                      )}
+                      />
                     </div>
+                  )}
                 </div>
               </div>
+            </div>
             // </div>
           ))}
         </div>
