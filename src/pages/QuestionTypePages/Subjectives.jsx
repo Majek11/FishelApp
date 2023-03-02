@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import emptyPage from "../../assets/Empty_page.svg";
 
@@ -10,24 +10,28 @@ const Subjectives = ({
   callback,
 }) => {
   const scoringSheet = JSON.parse(localStorage.getItem("scoringSheet"));
+  let scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
   const [recordAnswer, setRecordAnswer] = useState(scoringSheet.subjective);
-  const [TotalScore, setTotalScore] = useState(0);
-
-  useEffect(() => {
-    if (submit) {
-      scoreTest();
-    }
-  }, [submit]);
-
-  const scoreTest = () => {
+  const [TotalScore, setTotalScore] = useState(scores.subjective);
+  console.log("bad", scores)
+  
+  
+  
+  const scoreTest = (userAnswer) => {
     let sumScore = 0;
     for (let i = 0; i < allQuestions.length; i++) {
-      if (allQuestions[i].question_answers[0] === recordAnswer[i]) {
+      if (allQuestions[i].question_answers[0] === userAnswer[i]) {
         sumScore++;
       }
     }
-    setTotalScore(sumScore);
+    localStorage.setItem("scoresPerQuestionType", JSON.stringify( {
+      ...scores,
+      subjective:sumScore,
+    }));
+    scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
+    console.log("good",scores)
     callback(sumScore, "subjective");
+    setTotalScore(scores.subjective);
   };
 
   if (allQuestions.length === 0) {
@@ -75,6 +79,7 @@ const Subjectives = ({
                 <div>{question.question_text}</div>
                 <div className="flex flex-col gap-2">
                   <div>
+                    { question.question_answers[0]}
                     <input
                       type="text"
                       disabled={submit}
@@ -89,7 +94,7 @@ const Subjectives = ({
                         submit &&
                         question.question_answers[0].toLowerCase() !==
                           recordAnswer[index].toLowerCase()
-                          ? " text-red-100 bg-[#b157575b]"
+                          ? " text-red-300 "
                           : ""
                       } `}
                       placeholder="Your Answer"
@@ -104,6 +109,7 @@ const Subjectives = ({
                           }
                         );
                         setRecordAnswer(newRecordAnswer);
+                        scoreTest(newRecordAnswer)
                         localStorage.setItem(
                           "scoringSheet",
                           JSON.stringify({

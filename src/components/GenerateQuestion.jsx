@@ -39,6 +39,11 @@ const GenerateQuestion = () => {
     const [validation, message] =
       questionGenerationValidation(generationData);
       localStorage.setItem("SetupDetails", JSON.stringify(generationData));
+      localStorage.setItem("scoresPerQuestionType", JSON.stringify( {
+        objective: 0,
+        theory: 0,
+        subjective: 0,
+      }));
     return [validation, message]
   };
 

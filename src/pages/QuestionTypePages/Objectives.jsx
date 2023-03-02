@@ -10,10 +10,11 @@ const Objectives = ({
   callback,
 }) => {
   const scoringSheet = JSON.parse(localStorage.getItem("scoringSheet")); 
+  let  scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
   const [recordAnswer, setRecordAnswer] = useState(scoringSheet.objective);
-  const [TotalScore, setTotalScore] = useState(0);
+  const [TotalScore, setTotalScore] = useState(scores.objective);
   let alphabets = ["A", "B", "C", "D", "E"];
-
+  
   
   const scoreTest = (userAnswer) => {
     let sumScore = 0;
@@ -22,7 +23,13 @@ const Objectives = ({
         sumScore++;
       }
     }
-    setTotalScore(sumScore);
+    localStorage.setItem("scoresPerQuestionType", JSON.stringify( {
+      ...scores,
+      objective:sumScore,
+    }));
+    
+    scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
+    setTotalScore(scores.objective);
     callback(sumScore, "objective")
   };
   

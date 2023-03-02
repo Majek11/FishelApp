@@ -11,12 +11,14 @@ import { getFilteredData, generateScoringSheet } from "../utils";
 
 const QuestionsPage = () => {
   const newGenerationData = JSON.parse(localStorage.getItem("SetupDetails"));
+  const scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
+
   const getQuestionUrl =
-    "https://script.google.com/macros/s/AKfycbwPwS-Gv3Kt2z8WO6MBn8bSu73RLkVqz7y5x5F3n0vczHm7B_k8t9pXm2hfvLwFwYzv/exec";
-
+  "https://script.google.com/macros/s/AKfycbwPwS-Gv3Kt2z8WO6MBn8bSu73RLkVqz7y5x5F3n0vczHm7B_k8t9pXm2hfvLwFwYzv/exec";
+  
   const getPDFQuestionUrl =
-    "https://script.google.com/macros/s/AKfycbybVmFn0vbMI2-5CqCQYjcV_U-Tmi63fMy6YJOM6CyovXMlMqve6ejHz5vKSOKJHkh2/exec";
-
+  "https://script.google.com/macros/s/AKfycbybVmFn0vbMI2-5CqCQYjcV_U-Tmi63fMy6YJOM6CyovXMlMqve6ejHz5vKSOKJHkh2/exec";
+  
   const [allQuestions, setAllQuestion] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isPDFStarted, setIsPDFStarted] = useState(false);
@@ -24,11 +26,8 @@ const QuestionsPage = () => {
   const [selectedTab, setSelectedTab] = useState("");
   const [scoring, setScoring] = useState({});
   const [submit, setSubmit] = useState(false);
-  const [scoresPerQuestionType, setScoresPerQuestionType] = useState({
-    objective: 0,
-    theory: 0,
-    subjective: 0,
-  });
+  const [scoresPerQuestionType, setScoresPerQuestionType] = useState(scores);
+ 
 
   async function fetchAllQuestions() {
     const response = await fetch(getQuestionUrl);
@@ -53,10 +52,9 @@ const QuestionsPage = () => {
 
   const submitTest = (e) => {
     setSubmit(true);
-    scoreTest(0, "")
   };
 
-  async function scoreTest(totalScore, questionType) {
+  function scoreTest(totalScore, questionType) {
     setIsMarking(true);    
    let newScoresPerQuestionType=  {
       ...scoresPerQuestionType,
@@ -67,8 +65,6 @@ const QuestionsPage = () => {
     setAllTotalScores(scoresPerQuestionTypeValues.reduce((a, b) => a + b, 0));
     setIsMarking(false);
   }
-
-  console.log(allTotalScores);
 
   async function fetchPdfQuestionsLinks() {
     setIsPDFStarted(true);
@@ -249,19 +245,21 @@ const QuestionsPage = () => {
                         newGenerationData={newGenerationData}
                         submit={submit}
                         callback={scoreTest}
+                        scoresPerQuestionType={scoresPerQuestionType}
+                        />
+                      }
                       />
-                    }
-                  />
                   <Route
                     path="/subjective"
                     element={
                       <Subjectives
-                        allQuestions={allQuestions.subjective}
-                        checked={checked}
-                        scoringSheet={scoring.subjective}
-                        newGenerationData={newGenerationData}
-                        submit={submit}
-                        callback={scoreTest}
+                      allQuestions={allQuestions.subjective}
+                      checked={checked}
+                      scoringSheet={scoring.subjective}
+                      newGenerationData={newGenerationData}
+                      submit={submit}
+                      callback={scoreTest}
+                      scoresPerQuestionType={scoresPerQuestionType}
                       />
                     }
                   />
