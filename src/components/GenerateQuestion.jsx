@@ -297,14 +297,14 @@ const GenerateQuestion = () => {
                       type="number"
                       value={generationData.question_type.theory}
                       onChange={(e) => {
-                        if (e.target.value <= 3 && e.target.value >= 0) {
+                        if (e.target.value <= 1 && e.target.value >= 0) {
                           setGenerationData({
                             ...generationData,
                             question_type: {...generationData.question_type, theory:e.target.value},
                           });
                         }
                       }}
-                      placeholder="Max 3"
+                      placeholder="Max 1"
                       className="outline-none bg-transparent font-regular h-[40px] w-[100px] p-2 lg:text-lg border-b-[1px] lg:border-b-2  border-solid border-b-[#F0FCFF]"
                     />
                   </div>

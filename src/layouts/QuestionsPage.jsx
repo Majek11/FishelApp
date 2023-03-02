@@ -41,9 +41,9 @@ const QuestionsPage = () => {
   }
   useEffect(() => {
     setTotalNumberOfQuestions(
-      +newGenerationData.question_type.objective +
-        +newGenerationData.question_type.subjective +
-        +newGenerationData.question_type.theory
+    (  +newGenerationData.question_type.objective +
+      +newGenerationData.question_type.subjective +
+      +newGenerationData.question_type.theory)*10
     );
   }, [scoring]);
   const [allTotalScores, setAllTotalScores] = useState(0);
@@ -85,13 +85,10 @@ const QuestionsPage = () => {
   };
 
   // Fetch question data
-  // useEffect(() => {
-  //   fetchAllQuestions();
-  // }, [submit]);
-
   useEffect(() => {
     fetchAllQuestions();
   }, []);
+
   return (
     <>
       {!isLoading ? (
