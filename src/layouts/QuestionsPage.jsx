@@ -6,8 +6,8 @@ import { BiDownload } from "react-icons/bi";
 import Objectives from "../pages/QuestionTypePages/Objectives";
 import Subjectives from "../pages/QuestionTypePages/Subjectives";
 import Theories from "../pages/QuestionTypePages/Theories";
-import ReactSwitch from 'react-switch';
-import{getFilteredData} from '../utils'
+import ReactSwitch from "react-switch";
+import { getFilteredData, generateScoringSheet } from "../utils";
 
 const QuestionsPage = () => {
   const newGenerationData = JSON.parse(localStorage.getItem("SetupDetails"));
@@ -22,14 +22,32 @@ const QuestionsPage = () => {
   const [isPDFStarted, setIsPDFStarted] = useState(false);
   const [pdfUrls, setPDFUrls] = useState({});
   const [selectedTab, setSelectedTab] = useState("");
+  const [scoring, setScoring] = useState({});
+  const [submit, setSubmit] = useState(false);
 
   async function fetchAllQuestions() {
     const response = await fetch(getQuestionUrl);
     const data = await response.json();
-    const filteredData = await getFilteredData(data[0].data,newGenerationData)
+    const filteredData = await getFilteredData(data[0].data, newGenerationData);
+    const scoringSheet = await generateScoringSheet(newGenerationData);
     setAllQuestion(filteredData);
+    setScoring(scoringSheet);
     setIsLoading(true);
+    localStorage.setItem("scoringSheet", JSON.stringify(scoringSheet));
+
   }
+  
+  const wow = (e) => {
+    setSubmit(!submit)
+  }
+
+  // const getDropDownValue = (selectedValue, selectionName) => {
+  //   let updatedUserData = { ...userData };
+  //   updatedUserData[selectionName] = selectedValue;
+  //   setUserData(updatedUserData);
+  //   yourDetailsDropDown["UserData"] = updatedUserData
+  //   localStorage.setItem('CalcDetails', JSON.stringify(yourDetailsDropDown));
+  // };
 
   async function fetchPdfQuestionsLinks() {
     setIsPDFStarted(true);
@@ -41,11 +59,9 @@ const QuestionsPage = () => {
 
   const [checked, setChecked] = useState(false);
 
-  const handleChange = val => {
-    setChecked(val)
-  }
-
-  console.log(checked)
+  const handleChange = (val) => {
+    setChecked(val);
+  };
 
   const selectTab = (e) => {
     setSelectedTab(e.target.dataset.user);
@@ -75,23 +91,21 @@ const QuestionsPage = () => {
           </h1>
           <div className="grid grid-cols-[300px_3fr] gap-8">
             <aside className="flex flex-col gap-8">
-             {
-               newGenerationData.generation_mode === "Print Offline"?(
+              {newGenerationData.generation_mode === "Print Offline" ? (
                 <button
-                onClick={fetchPdfQuestionsLinks}
-                className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
-              >
-                Get Questions As PDF <BiDownload size={24} />
-              </button>
-              ):(
+                  onClick={fetchPdfQuestionsLinks}
+                  className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
+                >
+                  Get Questions As PDF <BiDownload size={24} />
+                </button>
+              ) : (
                 <button
-                // onClick={fetchPdfQuestionsLinks}
-                className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
-              >
-                Submit
-              </button>
-              )
-             }
+                  onClick={wow}
+                  className="bg-[#8BE3F9] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4"
+                >
+                  Submit
+                </button>
+              )}
 
               {isPDFStarted ? (
                 <div className="fixed top-0 left-0 w-screen h-full bg-[#000000b3] text-[#8BE3F9] text-xl flex justify-center items-center">
@@ -124,60 +138,104 @@ const QuestionsPage = () => {
             </aside>
             <main className="flex flex-col gap-4 text-[#F0FCFF]">
               <div className="flex justify-between px-2">
-              <div className="flex gap-8">
-                <Link
-                  to="/generate-mode/questions/objective"
-                  onClick={selectTab}
-                  data-user="Objective"
-                  className={`font-semibold text-2xl flex flex-col gap-0.5 after:bg-[#8BE3F9] after:h-1 after:rounded-full ${
-                    selectedTab === "Objective" ? "after:w-1/2" : "after:w-0"
-                  } hover:after:w-full after:duration-300`}
-                >
-                  Objective
-                </Link>
-                <Link
-                  to="/generate-mode/questions/subjective"
-                  onClick={selectTab}
-                  data-user="Subjective"
-                  className={`font-semibold text-2xl flex flex-col gap-0.5 after:bg-[#8BE3F9] after:h-1 after:rounded-full ${
-                    selectedTab === "Subjective" ? "after:w-1/2" : "after:w-0"
-                  } hover:after:w-full after:duration-300`}
-                >
-                  Subjective
-                </Link>
-                <Link
-                  to="/generate-mode/questions/theory"
-                  onClick={selectTab}
-                  data-user="Theory"
-                  className={`font-semibold text-2xl flex flex-col gap-0.5 after:bg-[#8BE3F9] after:h-1 after:rounded-full ${
-                    selectedTab === "Theory" ? "after:w-1/2" : "after:w-0"
-                  } hover:after:w-full after:duration-300`}
-                >
-                  Theory
-                </Link>
-              </div>
-              {
-                newGenerationData.generation_mode === "Print Offline"?(
-
-                  <div className="flex gap-4 items-center">Solution  <ReactSwitch
-                  checked={checked}
-                  onChange={handleChange}
-                /></div>
-                ):(
+                <div className="flex gap-8">
+                  <Link
+                    to="/generate-mode/questions/objective"
+                    onClick={selectTab}
+                    data-user="Objective"
+                    className={`font-semibold text-2xl flex flex-col gap-0.5 after:bg-[#8BE3F9] after:h-1 after:rounded-full ${
+                      selectedTab === "Objective" ? "after:w-1/2" : "after:w-0"
+                    } hover:after:w-full after:duration-300`}
+                  >
+                    Objective ({newGenerationData.question_type.objective})
+                  </Link>
+                  <Link
+                    to="/generate-mode/questions/subjective"
+                    onClick={selectTab}
+                    data-user="Subjective"
+                    className={`font-semibold text-2xl flex flex-col gap-0.5 after:bg-[#8BE3F9] after:h-1 after:rounded-full ${
+                      selectedTab === "Subjective" ? "after:w-1/2" : "after:w-0"
+                    } hover:after:w-full after:duration-300`}
+                  >
+                    Subjective ({newGenerationData.question_type.subjective})
+                  </Link>
+                  <Link
+                    to="/generate-mode/questions/theory"
+                    onClick={selectTab}
+                    data-user="Theory"
+                    className={`font-semibold text-2xl flex flex-col gap-0.5 after:bg-[#8BE3F9] after:h-1 after:rounded-full ${
+                      selectedTab === "Theory" ? "after:w-1/2" : "after:w-0"
+                    } hover:after:w-full after:duration-300`}
+                  >
+                    Theory ({newGenerationData.question_type.theory})
+                  </Link>
+                </div>
+                {newGenerationData.generation_mode === "Print Offline" ? (
+                  <div className="flex gap-4 items-center">
+                    Solution{" "}
+                    <ReactSwitch checked={checked} onChange={handleChange} />
+                  </div>
+                ) : (
                   <></>
-                )
-              }
+                )}
               </div>
-
+              <div className="text-[#93e6fb] px-4">
+                Total Score: <b>40/50 marks</b>{" "}
+              </div>
               <div className="h-screen overflow-y-scroll">
                 <Routes>
                   <Route
                     path="/"
-                    element={<Objectives allQuestions={allQuestions.objective} checked={checked} newGenerationData={newGenerationData}/>}
+                    element={
+                      <Objectives
+                        allQuestions={allQuestions.objective}
+                        checked={checked}
+                        scoringSheet={scoring.objective}
+                        newGenerationData={newGenerationData}
+                        submit={submit}
+                        // callback={getDropDownValue}
+                      />
+                    }
                   />
-                  <Route path="/objective" element={<Objectives allQuestions={allQuestions.objective} checked={checked} newGenerationData={newGenerationData}/>} />
-                  <Route path="/subjective" element={<Subjectives allQuestions={allQuestions.subjective} checked={checked} newGenerationData={newGenerationData}/>} />
-                  <Route path="/theory" element={<Theories allQuestions={allQuestions.theory} checked={checked} newGenerationData={newGenerationData}/>} />
+                  <Route
+                    path="/objective"
+                    element={
+                      <Objectives
+                        allQuestions={allQuestions.objective}
+                        checked={checked}
+                        scoringSheet={scoring.objective}
+                        newGenerationData={newGenerationData}
+                        submit={submit}
+                        // callback={getDropDownValue}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/subjective"
+                    element={
+                      <Subjectives
+                        allQuestions={allQuestions.subjective}
+                        checked={checked}
+                        scoringSheet={scoring.subjective}
+                        newGenerationData={newGenerationData}
+                        submit={submit}
+                        // callback={getDropDownValue}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/theory"
+                    element={
+                      <Theories
+                        allQuestions={allQuestions.theory}
+                        checked={checked}
+                        scoringSheet={scoring.theory}
+                        newGenerationData={newGenerationData}
+                        submit={submit}
+                        // callback={getDropDownValue}
+                      />
+                    }
+                  />
                 </Routes>
               </div>
             </main>

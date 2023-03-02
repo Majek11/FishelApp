@@ -6,39 +6,26 @@ const SettingsDetails = ({ generationSetupData }) => {
       <h1 className="underline text-2xl font-medium">Setup Details</h1>
       <div className=" space-y-2">
         <p>
-          <span className="font-medium">Mode: </span>
+          <span className="font-medium">Mode : </span>
           {generationSetupData.generation_mode}
         </p>
         <p>
-          <span className="font-medium">Subject: </span>
+          <span className="font-medium">Subject : </span>
           {generationSetupData.subject}
         </p>
         <p>
-          <span className="font-medium">Topics: </span>
+          <span className="font-medium">Difficulty Level : </span>
+          {generationSetupData.difficulty_level}
+        </p>
+        <p>
+          <span className="font-medium">Topics : </span>
           {generationSetupData.topics.map(
             (topic,index) => (index === 0 ? (<span key={index}>{topic}</span>) : (<span key={index}>, {topic} </span>))
           )}
         </p>
-        <p>
-          <span className="font-medium">Difficulty Level: </span>
-          {generationSetupData.difficulty_level}
-        </p>
+      
 
-        <div>
-          <h1 className="font-medium underline">Question Type</h1>
-          <p>
-            <span className="font-medium">Objective: </span>
-            {generationSetupData.question_type.objective}
-          </p>
-          <p>
-            <span className="font-medium">Theory: </span>
-            {generationSetupData.question_type.theory}
-          </p>
-          <p>
-            <span className="font-medium">Subjective: </span>
-            {generationSetupData.question_type.subjective}
-          </p>
-        </div>
+   
       </div>
     </div>
   );

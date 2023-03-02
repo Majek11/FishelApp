@@ -1,10 +1,31 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import emptyPage from "../../assets/Empty_page.svg"
 
 const Theories = ({ allQuestions, checked, newGenerationData }) => {
+
+  if(allQuestions.length === 0){
+    return(<div className=" h-[75vh] bg-[#484F51]  rounded-lg p-8 flex flex-col gap-8 justify-center items-center">
+      <h1 className="text-2xl font-bold">No Theory Questions Generated</h1>
+      <img src={emptyPage} alt="not Subjectives found" width={300} />
+      <Link to="/generate-mode" className="bg-[#8BE3F9] text-[#353C3E] px-8 py-4 rounded-lg flex text-lg font-semibold justify-center items-center gap-4">
+      Back to Generate  Question
+      </Link>
+
+    </div>)
+  }
+
   return (
     <>
       {newGenerationData.generation_mode !== "Print Offline" ? (
-        <div className="flex flex-col gap-8 py-8 px-2">
+        <div className="flex flex-col gap-8 px-2 relative">
+           {
+            false?(
+              <div className=" sticky top-0 bg-[#353C3E] py-4">Score: </div>
+            ):(
+              <></>
+            )
+          }
           {allQuestions.map((question, index) => (
             <div key={index} className="bg-[#484F51] rounded-lg p-8">
               <div className="flex flex-col gap-4 border-b-[1px] pb-4 border-gray-400">

@@ -20,14 +20,35 @@ function checkQuestionType(questionType) {
   return questionType >= 1;
 }
 
-export function getFilteredData(questions,filterParams){
-  let filteredObj = questions.objective.splice(0,+filterParams.question_type.objective)
-  let filteredSub = questions.subjective.splice(0,+filterParams.question_type.subjective)
-  let filteredThy = questions.theory.splice(0,+filterParams.question_type.theory)
+export function getFilteredData(questions,setupDetails){
+  let filteredObj = questions.objective.splice(0,+setupDetails.question_type.objective)
+  let filteredSub = questions.subjective.splice(0,+setupDetails.question_type.subjective)
+  let filteredThy = questions.theory.splice(0,+setupDetails.question_type.theory)
 
   return {
     objective:filteredObj,
     subjective:filteredSub,
     theory:filteredThy,
   }
+}
+
+export function generateScoringSheet(setupDetails){
+  let objScoreSheet = []
+  let subScoreSheet = []
+  let thyScoreSheet = []
+
+  for(let i = 0; i < +setupDetails.question_type.objective; i++){
+    objScoreSheet[i] = ""
+  }
+  for(let i = 0; i < +setupDetails.question_type.subjective; i++){
+    subScoreSheet[i] = ""
+  }
+  for(let i = 0; i < +setupDetails.question_type.theory; i++){
+    thyScoreSheet[i] = ""
+  }
+    return {
+      objective: objScoreSheet,
+      subjective: subScoreSheet,
+      theory: thyScoreSheet,
+    }
 }

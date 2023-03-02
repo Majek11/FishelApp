@@ -12,9 +12,9 @@ const GenerateQuestion = () => {
     difficulty_level: "",
     generation_mode: "",
     question_type: {
-      objective: "",
-      theory: "",
-      subjective: "",
+      objective: 0,
+      theory: 0,
+      subjective: 0,
     },
   };
   const getSubjectsUrl =
@@ -262,26 +262,7 @@ const GenerateQuestion = () => {
                       className="outline-none bg-transparent font-regular h-[40px] w-[100px] p-2 lg:text-lg border-b-[1px] lg:border-b-2  border-solid border-b-[#F0FCFF]"
                     />
                   </div>
-                  <div className="flex gap-2">
-                    <div className="flex items-center text-[#F0FCFF] font-medium  h-[40px] w-[100px] lg:text-lg">
-                      Theory
-                    </div>
-
-                    <input
-                      type="number"
-                      value={generationData.question_type.theory}
-                      onChange={(e) => {
-                        if (e.target.value <= 3 && e.target.value >= 0) {
-                          setGenerationData({
-                            ...generationData,
-                            question_type: {...generationData.question_type, theory:e.target.value},
-                          });
-                        }
-                      }}
-                      placeholder="Max 3"
-                      className="outline-none bg-transparent font-regular h-[40px] w-[100px] p-2 lg:text-lg border-b-[1px] lg:border-b-2  border-solid border-b-[#F0FCFF]"
-                    />
-                  </div>
+                 
                   <div className="flex gap-2">
                     <div className="flex items-center text-[#F0FCFF] font-medium  h-[40px] w-[100px] lg:text-lg">
                     Subjective
@@ -300,6 +281,26 @@ const GenerateQuestion = () => {
                       }}
                       placeholder="Max 10"
                       className="outline-none bg-transparent font-regular h-[40px] w-[100px] p-2 lg:text-lg border-b-[1px]  lg:border-b-2  border-solid border-b-[#F0FCFF]"
+                    />
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="flex items-center text-[#F0FCFF] font-medium  h-[40px] w-[100px] lg:text-lg">
+                      Theory
+                    </div>
+
+                    <input
+                      type="number"
+                      value={generationData.question_type.theory}
+                      onChange={(e) => {
+                        if (e.target.value <= 3 && e.target.value >= 0) {
+                          setGenerationData({
+                            ...generationData,
+                            question_type: {...generationData.question_type, theory:e.target.value},
+                          });
+                        }
+                      }}
+                      placeholder="Max 3"
+                      className="outline-none bg-transparent font-regular h-[40px] w-[100px] p-2 lg:text-lg border-b-[1px] lg:border-b-2  border-solid border-b-[#F0FCFF]"
                     />
                   </div>
                 </div>
