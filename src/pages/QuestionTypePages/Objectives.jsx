@@ -20,7 +20,7 @@ const Objectives = ({
     let sumScore = 0;
     for (let i = 0; i < allQuestions.length; i++) {
       if (allQuestions[i].question_answers[0] === userAnswer[i]) {
-        sumScore++;
+        sumScore = sumScore + 10;
       }
     }
     localStorage.setItem("scoresPerQuestionType", JSON.stringify( {

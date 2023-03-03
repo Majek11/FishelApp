@@ -12,6 +12,8 @@ import { getFilteredData, generateScoringSheet } from "../utils";
 const QuestionsPage = () => {
   const newGenerationData = JSON.parse(localStorage.getItem("SetupDetails"));
   const scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
+  const aiResult = JSON.parse(localStorage.getItem("aiResult"));
+  const allAIScores = JSON.parse(localStorage.getItem("allAIScores"));
 
   const getQuestionUrl =
   "https://script.google.com/macros/s/AKfycbwPwS-Gv3Kt2z8WO6MBn8bSu73RLkVqz7y5x5F3n0vczHm7B_k8t9pXm2hfvLwFwYzv/exec";

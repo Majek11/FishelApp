@@ -3,7 +3,7 @@ import Selector from "./Selector";
 import MultipleTopics from "./MultipleTopics";
 import BarLoader from "react-spinners/BarLoader";
 import { Link } from "react-router-dom";
-import { questionGenerationValidation } from "../utils";
+import { questionGenerationValidation,createAiArray } from "../utils";
 
 const GenerateQuestion = () => {
   let generationSetup = {
@@ -39,6 +39,8 @@ const GenerateQuestion = () => {
     const [validation, message] =
       questionGenerationValidation(generationData);
       localStorage.setItem("SetupDetails", JSON.stringify(generationData));
+      localStorage.setItem("aiResults", JSON.stringify(createAiArray(generationData.question_type.theory,"")));
+      localStorage.setItem("allAIScores", JSON.stringify(createAiArray(generationData.question_type.theory,0)));
       localStorage.setItem("scoresPerQuestionType", JSON.stringify( {
         objective: 0,
         theory: 0,
@@ -297,14 +299,14 @@ const GenerateQuestion = () => {
                       type="number"
                       value={generationData.question_type.theory}
                       onChange={(e) => {
-                        if (e.target.value <= 1 && e.target.value >= 0) {
+                        if (e.target.value <= 3 && e.target.value >= 0) {
                           setGenerationData({
                             ...generationData,
                             question_type: {...generationData.question_type, theory:e.target.value},
                           });
                         }
                       }}
-                      placeholder="Max 1"
+                      placeholder="Max 3"
                       className="outline-none bg-transparent font-regular h-[40px] w-[100px] p-2 lg:text-lg border-b-[1px] lg:border-b-2  border-solid border-b-[#F0FCFF]"
                     />
                   </div>

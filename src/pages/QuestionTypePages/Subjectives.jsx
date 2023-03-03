@@ -13,23 +13,22 @@ const Subjectives = ({
   let scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
   const [recordAnswer, setRecordAnswer] = useState(scoringSheet.subjective);
   const [TotalScore, setTotalScore] = useState(scores.subjective);
-  console.log("bad", scores)
-  
-  
-  
+
   const scoreTest = (userAnswer) => {
     let sumScore = 0;
     for (let i = 0; i < allQuestions.length; i++) {
       if (allQuestions[i].question_answers[0] === userAnswer[i]) {
-        sumScore++;
+        sumScore = sumScore + 10;
       }
     }
-    localStorage.setItem("scoresPerQuestionType", JSON.stringify( {
-      ...scores,
-      subjective:sumScore,
-    }));
+    localStorage.setItem(
+      "scoresPerQuestionType",
+      JSON.stringify({
+        ...scores,
+        subjective: sumScore,
+      })
+    );
     scores = JSON.parse(localStorage.getItem("scoresPerQuestionType"));
-    console.log("good",scores)
     callback(sumScore, "subjective");
     setTotalScore(scores.subjective);
   };
@@ -79,7 +78,7 @@ const Subjectives = ({
                 <div>{question.question_text}</div>
                 <div className="flex flex-col gap-2">
                   <div>
-                    { question.question_answers[0]}
+                    {question.question_answers[0]}
                     <input
                       type="text"
                       disabled={submit}
@@ -109,7 +108,7 @@ const Subjectives = ({
                           }
                         );
                         setRecordAnswer(newRecordAnswer);
-                        scoreTest(newRecordAnswer)
+                        scoreTest(newRecordAnswer);
                         localStorage.setItem(
                           "scoringSheet",
                           JSON.stringify({
@@ -121,7 +120,7 @@ const Subjectives = ({
                     />
                   </div>
                   {submit ? (
-                    <div className="text-[#93e6fb] bg-[#8be3f928] p-2">
+                    <div className="text-[#93e6fb] bg-[#8be3f928] rounded-lg p-2">
                       {question.question_answers[0]}
                     </div>
                   ) : (

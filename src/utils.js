@@ -52,3 +52,13 @@ export function generateScoringSheet(setupDetails){
       theory: thyScoreSheet,
     }
 }
+
+export function createAiArray(num,init){
+  
+  let thyScoreSheet = []
+
+  for(let i = 0; i < num; i++){
+    thyScoreSheet[i] = init
+  }
+ return  thyScoreSheet
+}
